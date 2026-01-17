@@ -80,7 +80,7 @@ if 'df_cadastro' not in st.session_state:
         'Data Cadastro', 'Etapa Cadastro', 'Etapa Atual', 'Status Etapa'
     ])
     st.session_state.df_medicoes = pd.DataFrame(columns=[
-        'Código do Peu', 'Quilometragem Atual', 'Código de Barras', 'Carro',
+        'Código do Pneu', 'Quilometragem Atual', 'Código de Barras', 'Carro',
         'Data Medição', 'Tipo Evento', 'Voltas', 'Tempo Pista (min)', 'Pista',
         'Quilometragem', 'KM TOTAL', 'Interno (mm)', 'Centro Interno (mm)',
         'Centro Externo (mm)', 'Externo (mm)', 'Profundidade Média (mm)',
@@ -171,35 +171,12 @@ if uploaded_file:
     st.session_state.df_cadastro, st.session_state.df_medicoes = load_data(uploaded_file)
     st.sidebar.success("Dados carregados com sucesso!")
 
-# BOTÃO DE RESET NO SIDEBAR
+# Footer da sidebar
 st.sidebar.markdown("---")
-st.sidebar.markdown("### ⚠️ Zona de Perigo")
-
-if st.sidebar.button("🗑️ Limpar Sistema", type="secondary", use_container_width=True):
-    st.session_state.show_reset_confirm = True
-
-# Confirmação de reset
-if 'show_reset_confirm' in st.session_state and st.session_state.show_reset_confirm:
-    with st.sidebar:
-        st.warning("⚠️ **ATENÇÃO!** Esta ação vai:")
-        st.markdown("- Deletar TODOS os pneus")
-        st.markdown("- Deletar TODAS as medições")
-        st.markdown("- Resetar para Etapa 1")
-        st.markdown("- Limpar histórico")
-        st.markdown("- Manter apenas carros padrão")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("✅ SIM, LIMPAR", type="primary", use_container_width=True):
-                reset_sistema()
-                st.session_state.show_reset_confirm = False
-                st.success("✅ Sistema limpo com sucesso!")
-                st.balloons()
-                st.rerun()
-        with col2:
-            if st.button("❌ Cancelar", use_container_width=True):
-                st.session_state.show_reset_confirm = False
-                st.rerun()
+st.sidebar.markdown("### 🏁 Tire Management System")
+st.sidebar.markdown(f"**Temporada:** 2026")
+st.sidebar.markdown(f"**Etapa Atual:** {st.session_state.etapa_atual}/12")
+st.sidebar.caption("Desenvolvido para Stock Car Pro Series")
 
 # DASHBOARD
 if menu == "📊 Dashboard":
@@ -406,6 +383,8 @@ elif menu == "🏁 Gerenciar Etapas":
         else:
             st.info("Nenhuma etapa concluída ainda.")
 
+# Vou continuar com o resto do código no próximo bloco...
+
 # COMPRAR PNEUS
 elif menu == "🛒 Comprar Pneus":
     st.header("Comprar Pneus para a Etapa")
@@ -510,8 +489,6 @@ elif menu == "🛒 Comprar Pneus":
                 st.success(f"✅ {qtd_pneus} pneu(s) comprado(s) com sucesso!")
                 st.balloons()
                 st.rerun()
-
-# Continuo com o resto do código no próximo bloco...
 
 # GERENCIAR CARROS
 elif menu == "🏎️ Gerenciar Carros":
@@ -787,6 +764,8 @@ elif menu == "📋 Visualizar Dados":
         else:
             st.info("Nenhuma medição registrada ainda.")
 
+# Continua parte 3...
+
 # MONTAGEM DE SETS
 elif menu == "🔧 Montagem de Sets":
     st.header("Gerenciar Montagem de Sets de Pneus")
@@ -973,8 +952,6 @@ elif menu == "🔧 Montagem de Sets":
             st.dataframe(sets_desmontados, use_container_width=True)
         else:
             st.info("Nenhum set desmontado ainda.")
-
-# Continua no próximo bloco...
 
 # GERENCIAR PISTAS
 elif menu == "🏆 Gerenciar Pistas":
@@ -1210,7 +1187,7 @@ elif menu == "📤 Importar/Exportar":
         else:
             st.warning("Nenhum dado para exportar.")
 
-# CONFIGURAÇÕES
+# CONFIGURAÇÕES (COM BOTÃO DE RESET)
 elif menu == "⚙️ Configurações":
     st.header("Configurações do Sistema")
 
@@ -1271,10 +1248,3 @@ elif menu == "⚙️ Configurações":
         st.markdown("- ✅ Medições detalhadas com gráficos")
         st.markdown("- ✅ Exportação de dados")
         st.markdown("- ✅ Sistema de reset seguro")
-
-# Footer
-st.sidebar.markdown("---")
-st.sidebar.markdown("### 🏁 Tire Management System")
-st.sidebar.markdown(f"**Temporada:** 2026")
-st.sidebar.markdown(f"**Etapa Atual:** {st.session_state.etapa_atual}/12")
-st.sidebar.caption("Desenvolvido para Stock Car Pro Series")
